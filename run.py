@@ -1,8 +1,10 @@
-import pandas as pd
+import os
+
 from fci import scrapper as fci
+from laspa import scrapper as laspa
 
+if not os.path.exists("data"):
+    os.makedirs("data")
 
-df = pd.DataFrame(data=fci.run())
-# df.to_excel("fci.xlsx")
-df.to_csv("fci.csv")
-df.to_json("fci.json")
+data = fci.run()
+data = laspa.run()
