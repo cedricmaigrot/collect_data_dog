@@ -1,6 +1,7 @@
 
 from bs4 import BeautifulSoup
 import urllib.request
+import pandas as pd
 
 
 def run():
@@ -11,7 +12,9 @@ def run():
     fp.close()
     soup = BeautifulSoup(html_doc, 'html.parser')
     groups = soup.find_all("div", class_="group")
-    return get_groups(groups)
+    df = pd.DataFrame(data=get_groups(groups))
+    df.to_csv("data/fci.csv")
+    df.to_json("data/fci.json")
 
 
 def get_groups(groups):
