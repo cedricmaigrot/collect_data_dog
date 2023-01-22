@@ -7,4 +7,4 @@ if not os.path.exists("data"):
     os.makedirs("data")
 
 data = fci.run()
-data = laspa.run()
+# data = laspa.run()
