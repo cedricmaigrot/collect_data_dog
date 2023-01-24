@@ -1,3 +1,6 @@
 data
 fci/__pycache__
 laspa/__pycache__
+wamiz/__pycache__
+
+*.ipynb
