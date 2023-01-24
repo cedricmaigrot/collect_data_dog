@@ -1,8 +1,11 @@
+"""Scrapper du site de la SPA
+    """
 import requests
 import pandas as pd
 
 
 def run():
+    """Fonction principale de la collecte"""
     print("LA SPA : collecte des données sur les refuges")
     get_shelters()
     print("LA SPA : collecte des données sur les animaux")
@@ -10,16 +13,19 @@ def run():
 
 
 def get_shelters():
-    path = "https://www.la-spa.fr/app/wp-json/spa/v1/establishments/?api=1&types=refuges,maisons-spa&lat=&lng="
+    """Liste les refuges"""
+    arguments = "api=1&types=refuges,maisons-spa&lat=&lng="
+    path = f"https://www.la-spa.fr/app/wp-json/spa/v1/establishments/?{arguments}"
     response = requests.get(path)
     refuges = response.json()['items']
-    df = pd.DataFrame(refuges)
-    df.to_json('data/laspa_refuges.json')
-    df.to_csv('data/laspa_refuges.csv')
+    dataframe = pd.DataFrame(refuges)
+    dataframe.to_json('data/laspa_refuges.json')
+    dataframe.to_csv('data/laspa_refuges.csv')
 
 
 def get_animals():
-    url = f'https://www.la-spa.fr/app/wp-json/spa/v1/animals/search/?api=1&paged=1&seed=1'
+    """Collecte les informations sur les animaux d'un refuge"""
+    url = 'https://www.la-spa.fr/app/wp-json/spa/v1/animals/search/?api=1&paged=1&seed=1'
     response = requests.get(url)
     elements = response.json()['results']
 
@@ -32,6 +38,6 @@ def get_animals():
             elements.append(elem)
         page += 1
 
-    df = pd.DataFrame(elements)
-    df.to_json('data/laspa_animaux.json')
-    df.to_csv('data/laspa_animaux.csv')
+    dataframe = pd.DataFrame(elements)
+    dataframe.to_json('data/laspa_animaux.json')
+    dataframe.to_csv('data/laspa_animaux.csv')

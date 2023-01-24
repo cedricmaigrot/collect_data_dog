@@ -1,3 +1,5 @@
+"""Main code to launch
+    """
 import os
 
 from fci import scrapper as fci
@@ -7,6 +9,6 @@ from wamiz import scrapper as wamiz
 if not os.path.exists("data"):
     os.makedirs("data")
 
-data = fci.run()
-data = laspa.run()
-data = wamiz.run()
+fci.run()
+laspa.run()
+wamiz.run()
