@@ -22,6 +22,16 @@ def run():
     groups = soup.find_all("li", class_="col-6 col-sm-4 mb-3")
     df = pd.DataFrame(data=get_breeds(groups))
 
+    df['taille femelle'] = df['Chien femelle']
+    df['taille mâle'] = df['Chien mâle']
+    df['poids femelle'] = df['Chien femelle_']
+    df['poids mâle'] = df['Chien mâle_']
+
+    df.pop('Chien femelle')
+    df.pop('Chien mâle')
+    df.pop('Chien femelle_')
+    df.pop('Chien mâle_')
+
     df.to_csv("data/wamiz.csv")
     df.to_json("data/wamiz.json")
 
