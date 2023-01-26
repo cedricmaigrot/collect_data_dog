@@ -12,7 +12,16 @@ Ce projet vise à proposer des scrappers Python pour la collecte de données li�
 
 ```shell
 conda create --name doggo python=3.8 pip
+conda activate doggo
+pip install -e requirements.txt
 ```
+
+## Exec
+
+```shell
+python run.py
+```
+
 
 ## Me contacter
 
