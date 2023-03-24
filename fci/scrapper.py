@@ -15,11 +15,12 @@ def run():
     with urllib.request.urlopen(path) as file_path:
         mybytes = file_path.read()
     html_doc = mybytes.decode("utf8")
-    soup = BeautifulSoup(html_doc, 'html.parser')
+    soup = BeautifulSoup(html_doc, "html.parser")
     groups = soup.find_all("div", class_="group")
     dataframe = pd.DataFrame(data=get_groups(groups))
-    dataframe['Fullname'] = dataframe['Fullname'].apply(lambda x: x.replace(
-        "\r\n\t\t\t", " ").strip().title())
+    dataframe["Fullname"] = dataframe["Fullname"].apply(
+        lambda x: x.replace("\r\n\t\t\t", " ").strip().title()
+    )
     dataframe.to_csv("data/fci.csv")
     dataframe.to_json("data/fci.json")
 
@@ -28,8 +29,8 @@ def get_groups(groups):
     """Liste les groupes de la FCI"""
     response = []
     for group in groups:
-        base_url = group.a['href']
-        res = get_group(f'https://www.fci.be{base_url}')
+        base_url = group.a["href"]
+        res = get_group(f"https://www.fci.be{base_url}")
         for response_element in res:
             response.append(response_element)
     return response
@@ -41,7 +42,7 @@ def get_group(url):
     with urllib.request.urlopen(url) as file_path:
         mybytes = file_path.read()
     html_doc = mybytes.decode("utf8")
-    soup = BeautifulSoup(html_doc, 'html.parser')
+    soup = BeautifulSoup(html_doc, "html.parser")
     breeds = soup.find_all("td", class_="race")
     return get_breeds(breeds)
 
@@ -51,8 +52,8 @@ def get_breeds(breeds):
     response = []
     for breed in breeds:
         links = breed.find_all("a", class_="nom")
-        base_url = links[0]['href']
-        res = get_breed(f'https://www.fci.be{base_url}')
+        base_url = links[0]["href"]
+        res = get_breed(f"https://www.fci.be{base_url}")
         response.append(res)
     return response
 
@@ -63,7 +64,7 @@ def get_breed(url):
     with urllib.request.urlopen(url) as file_path:
         mybytes = file_path.read()
     html_doc = mybytes.decode("utf8")
-    soup = BeautifulSoup(html_doc, 'html.parser')
+    soup = BeautifulSoup(html_doc, "html.parser")
     tables = soup.find_all("table", class_="racetable")
     for table in tables:
         rows = table.find_all("tr")
@@ -76,7 +77,10 @@ def get_breed(url):
         for row in rows:
             items = row.find_all("td")
             dictionary[items[0].text.strip()] = items[1].text.strip()
-    dictionary['Fullname'] = soup.find_all("h2", class_="nom")[0].text
-    dictionary['Group'] = soup.find(
-        id="ContentPlaceHolder1_GroupeHyperLink").text
+    dictionary["Fullname"] = soup.find_all("h2", class_="nom")[0].text
+    dictionary["Group"] = soup.find(id="ContentPlaceHolder1_GroupeHyperLink").text
     return dictionary
+
+
+if __name__ == "__main__":
+    run()
